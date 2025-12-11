@@ -24,9 +24,11 @@ masalah awal.
 |~~~| CONTOH KASUS |~~~|
 
 #1. Menghitung Jumlah (SUM) dengan branching factor
-Sebuah tim astronomi sedang melakukan pengamatan terhadap intensitas cahaya bintang pada satu gugus tertentu. Sensor teleskop merekam lima nilai intensitas yang diperoleh dari lima titik pengamatan yang berbeda. Data tersebut adalah:
-[4, 5, 8, 6, 2]
-Untuk mempercepat analisis, komputer observatorium menggunakan algoritma Divide–Conquer with Branching Factor untuk penghitungan total intensitas. bagaimana langkah nya?
+Sebuah tim astronomi sedang melakukan pengamatan terhadap intensitas cahaya bintang
+pada satu gugus tertentu. Sensor teleskop merekam lima nilai intensitas yang diperoleh 
+dari lima titik pengamatan yang berbeda. Data tersebut adalah: [4, 5, 8, 6, 2]
+Untuk mempercepat analisis, komputer observatorium menggunakan algoritma Divide–Conquer
+dengan Branching Factor untuk penghitungan total intensitas. bagaimana langkah nya?
 
 Array [4,5,8,6,2]
 
@@ -86,7 +88,11 @@ sum_branching(nilai)
 
 
 #2. Mencari Elemen Maksimal dengan Branching Factor
-Sebuah tim robot penyortir di sebuah pabrik elektronik sedang melakukan pengujian untuk memilih komponen dengan kualitas tertinggi. Setiap komponen diberi nilai kualitas berupa angka. Untuk mempercepat proses, robot menggunakan metode pencarian dengan branching factor, yaitu membandingkan beberapa komponen sekaligus dalam satu langkah.Pada suatu percobaan, robot menerima daftar nilai kualitas komponen berikut:
+Sebuah tim robot penyortir di sebuah pabrik elektronik sedang melakukan pengujian 
+untuk memilih komponen dengan kualitas tertinggi. Setiap komponen diberi nilai 
+kualitas berupa angka. Untuk mempercepat proses, robot menggunakan metode pencarian
+dengan branching factor, yaitu membandingkan beberapa komponen sekaligus dalam satu
+langkah.Pada suatu percobaan, robot menerima daftar nilai kualitas komponen berikut:
 [3, 8, 6, 2, 9, 5]
 komponen mana yang akan terpilih sebagai komponen dengan nilai kualitas tertinggi?
 
@@ -153,7 +159,9 @@ conquer dibagi menjadi sub-sub masalah yang memiliki ukuran sama
 |~~~| CONTOH KASUS |~~~|
 
 #1. Menghitung Rata-Rata (Mean) dengan Balance
-Sebuah kelas sedang melakukan lomba kecil. Setiap siswa mendapat skor pada satu babak permainan. Berikut adalah skor nya [2,9,4,5,1]. Berapakah rata-rata (mean) dari skor kelima siswa tersebut?
+Sebuah kelas sedang melakukan lomba kecil. Setiap siswa mendapat skor pada satu 
+babak permainan. Berikut adalah skor nya [2,9,4,5,1]. Berapakah rata-rata (mean)
+dari skor kelima siswa tersebut?
 
  Array [2,9,4,5,1]
 
@@ -209,7 +217,10 @@ mean_balance(nilai)
 
 
 #3. Mengurutkan (Sorting) dengan Balance
-Di sebuah toko roti, lima jenis roti paling populer dicatat berdasarkan jumlah roti terjual dalam satu jam. Namun, datanya masih acak, sehingga pemilik toko ingin menyusunnya dari penjualan tertinggi ke terendah agar mudah menentukan jenis roti yang harus diproduksi lebih banyak.
+Di sebuah toko roti, lima jenis roti paling populer dicatat berdasarkan jumlah roti 
+terjual dalam satu jam. Namun, datanya masih acak, sehingga pemilik toko ingin
+menyusunnya dari penjualan tertinggi ke terendah agar mudah menentukan jenis roti
+yang harus diproduksi lebih banyak.
 Jumlah roti terjual adalah: [3, 2, 6, 7, 5]
 
 Array [3,2,6,7,5]
@@ -946,7 +957,8 @@ D. MERGE SORT
 
 Merge Sort adalah algoritma Divide and Conquer (D&C). Logikanya adalah memecah
 (Divide) array secara rekursif menjadi sub-array yang lebih kecil hingga setiap sub
-array hanya memiliki satu elemen, Kemudian, ia menggabungkan sub-array yang sudah terurut itu kembali, satu per satu, hingga menjadi satu array utuh yang terurut.
+array hanya memiliki satu elemen, Kemudian, ia menggabungkan sub-array yang sudah
+terurut itu kembali, satu per satu, hingga menjadi satu array utuh yang terurut.
 
 <>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
 
@@ -967,15 +979,19 @@ Algoritma ini pada dasarnya adalah dua fungsi:
 2. Fungsi Pembantu (merge):
 > Menerima dua array yang sudah terurut (kiri dan kanan).
 > Membuat satu array hasil yang kosong.
-> Membandingkan elemen pertama kiri dan kanan. Ambil yang terkecil, masukkan ke hasil,   dan geser penunjuk (indeks) di array tersebut.
+> Membandingkan elemen pertama kiri dan kanan. Ambil yang terkecil, masukkan ke
+  hasil,   dan geser penunjuk (indeks) di array tersebut.
 > Ulangi terus hingga salah satu array habis.
 > Masukkan semua sisa elemen dari array yang belum habis ke hasil.
 > Kembalikan hasil.
 
 |~~~| CONTOH KASUS |~~~|
 
-Sebuah perusahaan ekspedisi sedang menyiapkan daftar paket yang harus dikirim pada hari ini. Karena jumlah paket cukup banyak dan data harus diurutkan dengan cepat, perusahaan memutuskan menggunakan algoritma Merge Sort, yang dikenal sangat efisien untuk data dalam jumlah besar.
-Berikut adalah berat paket (dalam kilogram) yang harus diurutkan dari yang paling ringan ke yang paling berat:
+Sebuah perusahaan ekspedisi sedang menyiapkan daftar paket yang harus dikirim pada 
+hari ini. Karena jumlah paket cukup banyak dan data harus diurutkan dengan cepat,
+perusahaan memutuskan menggunakan algoritma Merge Sort, yang dikenal sangat efisien 
+untuk data dalam jumlah besar. Berikut adalah berat paket (dalam kilogram) yang harus 
+diurutkan dari yang paling ringan ke yang paling berat:
 12 kg, 8 kg, 2 kg, 15 kg, 3 kg, 
 
 Vektor Awal: [12, 8, 2, 15, 3] (n = 5)
@@ -1044,7 +1060,9 @@ merge_sort(berat_paket)
 
 e. QUICK SORT 
 
-Quick Sort bekerja dengan memilih satu elemen sebagai Pivot. Kemudian, ia menyusun ulang array sehingga semua elemen yanglebih kecil dari Pivot berada di kirinya, dan semua elemen yang lebih besar berada di kanannya
+Quick Sort bekerja dengan memilih satu elemen sebagai Pivot. Kemudian, ia menyusun
+ulang array sehingga semua elemen yanglebih kecil dari Pivot berada di kirinya, dan 
+semua elemen yang lebih besar berada di kanannya
 
 <>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
 
@@ -1065,7 +1083,8 @@ Quick Sort bekerja dengan memilih satu elemen sebagai Pivot. Kemudian, ia menyus
 
 |~~~| CONTOH KASUS |~~~|
 
-HRD menerima daftar umur pelamar: [24, 30, 21, 27, 35, 29, 23] HRD ingin mengurutkan umur pelamar dari yang paling tua ke yang paling muda menggunakan Quick Sort
+HRD menerima daftar umur pelamar: [24, 30, 21, 27, 35, 29, 23] HRD ingin mengurutkan 
+umur pelamar dari yang paling tua ke yang paling muda menggunakan Quick Sort
 
 Vektor Awal: [24, 30, 21, 27, 35, 29, 23]
 Kita akan menelusuri panggilan rekursifnya. Q(…) adalah panggilan fungsi quick_sort.
@@ -1143,12 +1162,15 @@ quick_sort(nilai)
 
 #2. NON-COMPARISON SORT
 
-Non-comparison sort adalah algoritma yang tidak membandingkan elemen-elemen data satu sama lain. Algoritma dalam kelompok ini memanfaatkan karakteristik dari data itu sendiri, seperti jumlah digit yang dimiliki atau frekuensinya.
+Non-comparison sort adalah algoritma yang tidak membandingkan elemen-elemen data
+satu sama lain. Algoritma dalam kelompok ini memanfaatkan karakteristik dari data
+itu sendiri, seperti jumlah digit yang dimiliki atau frekuensinya.
 
 a. RADIX SORT
 
 Radix Sort (Sortir Digit) adalah algoritma yang mengurutkan data dengan
-mengelompokkannya berdasarkan digit per digit. Mulai dari satuan, lalu ke puluhan, ratusan, dan seterusnya
+mengelompokkannya berdasarkan digit per digit. Mulai dari satuan, lalu ke puluhan,
+ratusan, dan seterusnya
 
  <>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
  
@@ -1164,12 +1186,16 @@ di digit puluhan, 17 dan 02 akan dikelompokkan berdasarkan 1 dan 0).
 
 |~~~| CONTOH KASUS |~~~|
 
-Seorang petugas administrasi di sebuah perusahaan teknologi sedang mengolah data nomor tiket servis yang masuk pada hari itu. Nomor tiket tersebut tidak disusun secara berurutan karena datang pada waktu yang berbeda-beda.
+Seorang petugas administrasi di sebuah perusahaan teknologi sedang mengolah data nomor
+tiket servis yang masuk pada hari itu. Nomor tiket tersebut tidak disusun secara berurutan 
+karena datang pada waktu yang berbeda-beda.
 
 Nomor tiket yang tercatat adalah: [329, 45, 7, 88, 501, 23, 90, 4]
 
-Manajer meminta petugas untuk mengurutkan nomor tiket dari yang paling kecil ke yang paling besar agar mudah disusun dalam arsip.
-Petugas diminta menggunakan metode Radix Sort agar proses pengurutan lebih cepat, karena jumlah datanya sangat banyak.
+Manajer meminta petugas untuk mengurutkan nomor tiket dari yang paling kecil ke yang 
+paling besar agar mudah disusun dalam arsip.
+Petugas diminta menggunakan metode Radix Sort agar proses pengurutan lebih cepat,
+karena jumlah datanya sangat banyak.
 
 Iterasi 1: Sortir berdasarkan Digit Satuan (eksponen 1)
 
@@ -1266,7 +1292,8 @@ antara 0-9, atau 1-100).
 1.Cari Nilai Maksimal: Temukan nilai terbesar (max_val) dalam vektor input.
 2.Buat Array Hitung (Count): Buat sebuah vektor baru bernama count dengan ukuran max_val
 (atau max_val + 1 jika data mulai dari 0). Inisialisasi semua nilainya dengan 0.
-3.Hitung Frekuensi: Iterasi melalui vektor input (vektor[i]). Untuk setiap elemen, tambahkan 1 ke "ember"-nya: count[vektor[i]] = count[vektor[i]] + 1
+3.Hitung Frekuensi: Iterasi melalui vektor input (vektor[i]). Untuk setiap elemen,
+tambahkan 1 ke "ember"-nya: count[vektor[i]] = count[vektor[i]] + 1
 4.Susun Ulang Array (Combine):
 > Buat vektor hasil yang kosong.
 > Iterasi melalui array count, dari i = 1 hingga max_val:
@@ -1277,7 +1304,9 @@ antara 0-9, atau 1-100).
 
 |~~~| CONTOH KASUS |~~~|
 
-Bagian administrasi sebuah toko elektronik mencatat jumlah barang rusak yang dikembalikan oleh pelanggan dalam satu minggu. Data tersebut tidak berurutan, sehingga petugas perlu mengurutkannya dari jumlah barang rusak terbanyak → tersedikit.
+Bagian administrasi sebuah toko elektronik mencatat jumlah barang rusak yang dikembalikan
+oleh pelanggan dalam satu minggu. Data tersebut tidak berurutan, sehingga petugas perlu
+mengurutkannya dari jumlah barang rusak terbanyak → tersedikit.
 Data jumlah barang rusak adalah: [4, 2, 5, 3, 5, 1, 3, 2]
 Gunakan Counting Sort (Descending) untuk mengurutkan data tersebut.
 
@@ -1856,6 +1885,7 @@ cat("Urutan :", hasil2$urutan, "\n")
 cat("Waktu selesai :", hasil2$waktu_selesai, "\n")
 cat("Total waktu :", hasil2$total_waktu, "\n")
 cat("MCT :", hasil2$MCT, "\n")
+
 
 
 
