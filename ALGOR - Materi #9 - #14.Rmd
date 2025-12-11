@@ -1,0 +1,1864 @@
+ALGORITMA DAN PEMROGRAMAN
+MINI PROJECT
+STATISTIKA 1A
+KELOMPOK 1 
+> DWI ARTA SILALAHI (3338250003)
+> AFRIZA ZENTRI NUR CANTIKA (3338250009)
+> AJENG DWI ALECSHA (3338250017)
+
+
+----------* #A. DIVIDE, CONQUER, COMBINE *----------
+
+ a. Divide adalah Masalah dibagi menjadi beberapa bagian, setiap bagian nya
+memiliki permasalahan yang serupa dengan masalah utama.
+ b. Conquer: Setiap bagian bagian masalah masing masing dipecahkan
+(dalam pemograman dilakukan secara rekursif).
+ c. Combine adalah solusi dari masing masing bagian masalah digabungkan sehingga
+membentuk solusi untuk masalah utama
+
+#1.  BRANCHING FACTOR
+
+Branching factor adalah jumlah dari sub masalah yang akan dibagi dari sebuah 
+masalah awal.
+
+|~~~| CONTOH KASUS |~~~|
+
+#1. Menghitung Jumlah (SUM) dengan branching factor
+Sebuah tim astronomi sedang melakukan pengamatan terhadap intensitas cahaya bintang pada satu gugus tertentu. Sensor teleskop merekam lima nilai intensitas yang diperoleh dari lima titik pengamatan yang berbeda. Data tersebut adalah:
+[4, 5, 8, 6, 2]
+Untuk mempercepat analisis, komputer observatorium menggunakan algoritma Divide–Conquer with Branching Factor untuk penghitungan total intensitas. bagaimana langkah nya?
+
+Array [4,5,8,6,2]
+
+ *Langkah 1 (Branching)
+Pecah array menjadi dua bagian :
+Bagian 1 : [4,5]
+Bagian 2 : [8,6,2]
+
+ *Langkah 2 (Branching)
+Pecah lagi bagian 2 :
+Bagian 1a : [4]
+Bagian 1b : [5]
+Bagian 2a : [8]
+Bagian 2b : [6,2]
+
+ *Langkah 3 (Conquer)
+Hitung jumlah di setiap bagian :
+Bagian 1a : 4
+Bagian 1b : 5
+Bagian 2a : 8
+Bagian 2b : 6+2=8
+
+ *Langkah 4 (Combine)
+Gabungkan hasil bagian-bagian
+Jumlah total : 8+8+5+4=25
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+
+# Fungsi SUM dengan branching factor (divide and conquer)
+sum_branching <- function(arr) {
+  
+  # Base case: 1 elemen → langsung kembalikan
+  if (length(arr) == 1) {
+    return(arr[1])
+  }
+  
+  # Tentukan titik pembagian (branching factor = 2)
+  mid <- floor(length(arr) / 2)
+  
+  # Bagi menjadi dua bagian
+  left_part  <- arr[1:mid]
+  right_part <- arr[(mid+1):length(arr)]
+  
+  # Rekursif ke dua bagian
+  sum_left  <- sum_branching(left_part)
+  sum_right <- sum_branching(right_part)
+  
+  # Combine (jumlahkan dua hasil rekursif)
+  return(sum_left + sum_right)
+}
+
+# Contoh array
+nilai <- c(4, 5, 8, 6, 2)
+
+# Jalankan fungsi
+sum_branching(nilai)
+
+
+#2. Mencari Elemen Maksimal dengan Branching Factor
+Sebuah tim robot penyortir di sebuah pabrik elektronik sedang melakukan pengujian untuk memilih komponen dengan kualitas tertinggi. Setiap komponen diberi nilai kualitas berupa angka. Untuk mempercepat proses, robot menggunakan metode pencarian dengan branching factor, yaitu membandingkan beberapa komponen sekaligus dalam satu langkah.Pada suatu percobaan, robot menerima daftar nilai kualitas komponen berikut:
+[3, 8, 6, 2, 9, 5]
+komponen mana yang akan terpilih sebagai komponen dengan nilai kualitas tertinggi?
+
+Array [3,8,6,2,9,5]
+
+ *Langkah 1 (Branching)
+Pecah array menjadi dua bagian :
+Bagian 1 : [3,8,6]
+Bagian 2 ; [2,9,5]
+
+ *Langkah 2 (Branching)
+Pecah lagi setiap bagian :
+Bagian 1a : [3]
+Bagian 1b : [8,6]
+Bagian 2a : [2]
+Bagian 2b : [9,5]
+
+ *Langkah 3 (Conquer)
+Temukan elemen terbesar di setiap bagian :
+Bagian 1a : 3
+Bagian 1b : max(8,6) = 8
+Bagian 2a : 2
+Bagian 2b : max(9,5) = 9
+
+ *Langkah 4
+Bandingkan hasil maksimal dari setiap bagian :
+Elemen maksimal : max(9,2,8,3) = 9
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+
+# Fungsi mencari elemen maksimal menggunakan divide and conquer
+max_branching <- function(arr) {
+  
+  # Base case: jika hanya 1 elemen → itu yang terbesar
+  if (length(arr) == 1) {
+    return(arr[1])
+  }
+  
+  # Bagi array menjadi 2 bagian (branching factor = 2)
+  mid <- floor(length(arr) / 2)
+  left_part  <- arr[1:mid]
+  right_part <- arr[(mid+1):length(arr)]
+  
+  # Cari maksimum di masing-masing bagian
+  max_left  <- max_branching(left_part)
+  max_right <- max_branching(right_part)
+  
+  # Combine: ambil yang lebih besar
+  return(max(max_left, max_right))
+}
+
+# Contoh array
+nilai <- c(3, 8, 6, 2, 9, 5)
+
+# Jalankan fungsi
+max_branching(nilai)
+
+
+#2. BALANCE
+
+Kondisi balance akan tercapai jika masalah awal persoalan divide and 
+conquer dibagi menjadi sub-sub masalah yang memiliki ukuran sama
+
+|~~~| CONTOH KASUS |~~~|
+
+#1. Menghitung Rata-Rata (Mean) dengan Balance
+Sebuah kelas sedang melakukan lomba kecil. Setiap siswa mendapat skor pada satu babak permainan. Berikut adalah skor nya [2,9,4,5,1]. Berapakah rata-rata (mean) dari skor kelima siswa tersebut?
+
+ Array [2,9,4,5,1]
+
+ *Langkah 1 (Balance)
+Pecah array menjadi dua bagian yang seimbang :
+Bagian 1 : [2,9] -> 2 elemen
+Bagian 2 : [4,5,1] -> 3 elemen 
+
+ *Langkah 2 (Conquer)
+Hitung jumlah di setiap bagian :
+Bagian 1 : 2+9 = 11
+Bagian 2 : 4+5+1  =10
+
+ *Langkah 3 (Combine)
+Gabungkan asil total dan bagi dengan jumlah ekemen :
+Jumlah total : 11+10 = 21
+Rata-Rata : 21/5 = 4.2
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+# Fungsi menghitung jumlah menggunakan metode balance (divide & conquer)
+sum_balance <- function(arr) {
+  
+  # Base case: jika hanya 1 elemen → kembalikan elemen itu
+  if (length(arr) == 1) {
+    return(arr[1])
+  }
+  
+  # Bagi array menjadi dua bagian seimbang
+  mid <- floor(length(arr) / 2)
+  left_part  <- arr[1:mid]
+  right_part <- arr[(mid + 1):length(arr)]
+  
+  # Rekursi untuk dua bagian
+  sum_left  <- sum_balance(left_part)
+  sum_right <- sum_balance(right_part)
+  
+  # Gabungkan hasil
+  return(sum_left + sum_right)
+}
+
+#2. Fungsi mean menggunakan sum_balance
+mean_balance <- function(arr) {
+  total <- sum_balance(arr)
+  return(total / length(arr))
+}
+
+# Contoh array
+nilai <- c(2, 9, 4, 5, 1)
+
+# Jalankan fungsi
+mean_balance(nilai)
+
+
+#3. Mengurutkan (Sorting) dengan Balance
+Di sebuah toko roti, lima jenis roti paling populer dicatat berdasarkan jumlah roti terjual dalam satu jam. Namun, datanya masih acak, sehingga pemilik toko ingin menyusunnya dari penjualan tertinggi ke terendah agar mudah menentukan jenis roti yang harus diproduksi lebih banyak.
+Jumlah roti terjual adalah: [3, 2, 6, 7, 5]
+
+Array [3,2,6,7,5]
+
+ *Langkah 1 (Balance)
+Pecah array menjadi dua bagian yang seimbang :
+Bagian 1 : [3,2] -> 2 elemen 
+Bagian 2 ; [6,7,5] -> 3 elemen
+
+ * Langkah 2 (Conquer)
+Urutkan setiap bagian :
+Bagian 1 : [2,3]
+Bagian 2 : [5,6,7]
+
+ *Langkah 3 (Combine)
+Gabungkan hasil array dari setiap bagian :
+Array terurut : [2,3,5,6,7]
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+
+merge_balance <- function(left, right) {
+  result <- c()
+  i <- 1
+  j <- 1
+  
+  # Bandingkan elemen kiri dan kanan
+  while (i <= length(left) && j <= length(right)) {
+    if (left[i] <= right[j]) {
+      result <- c(result, left[i])
+      i <- i + 1
+    } else {
+      result <- c(result, right[j])
+      j <- j + 1
+    }
+  }
+  
+  # Ambil sisa elemen jika masih ada
+  if (i <= length(left)) {
+    result <- c(result, le
+
+
+#3. DATA DEPENDENCE OF DIVIDE FUNCTION
+
+Dependence of Divide Function memiliki sebuah fungsi pembagian terhadap data 
+yang memiliki ketergantungan, artinya jika ukuran relatif dari sebuah
+sub msalah tergantung proses input datanya.
+
+|~~~| CONTOH KASUS |~~~|
+
+#1. Memeriksa Elemen Tertentu dengan Data Dependence of Divide Function
+Jika Array [4,6,2,8,10] 
+-> Mencari elemen 2
+
+ *Langkah 1 (Prasyarat)
+Urutkan array : [2,4,6,8,10]
+
+ *Langkah 2 (Divide)
+Cek elemen di tengah : elemen ketiga yaitu 6
+Karena 2 lebih kecil dari elemen tengah, pencarian  dilanjutkan pada bagian 
+kiri array yaitu [2,4]
+
+ *Langkah 3 (Conquer)
+Pada bagian kiri [2,4], cek elemen pertama yaitu 2
+Elemen yang dicari ditemukan -> TRUE
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+# Fungsi pencarian dengan data dependence divide function
+search_dep <- function(arr, target) {
+  
+  # Base case: jika array kosong
+  if (length(arr) == 0) {
+    return(FALSE)
+  }
+  
+  # Base case: jika hanya satu elemen
+  if (length(arr) == 1) {
+    return(arr[1] == target)
+  }
+  
+  # Tentukan titik pembagian berdasarkan data
+  # DI SINI: kita bagi menjadi dua, tapi rekursi hanya ke bagian yg diperlukan
+  mid <- floor(length(arr) / 2)
+  
+  left_part  <- arr[1:mid]
+  right_part <- arr[(mid + 1):length(arr)]
+  
+  # Data dependence:
+  # Jika target <= max(left_part), cari di kiri
+  if (target %in% left_part) {
+    return(search_dep(left_part, target))
+  }
+  
+  # Jika tidak ada di kiri → cari di kanan
+  return(search_dep(right_part, target))
+}
+
+# Contoh array
+nilai <- c(4, 6, 2, 8, 10)
+
+# Mencari elemen 2
+search_dep(nilai, 2)
+
+
+#2. Mengurutkan (Sorting) dengan Data Dependence of Divide Function 
+Jika Array [10,4,7,6,1]
+
+ *Langkah 1 (Divide)
+Pilih satu elemen sebagai "Pivot" (nilai acuan). 
+-> Pivot nya adalah 6
+Bagi array berdasarkan nilai : 6
+> Bagian Kiri : Kumpulkan semua elemen yang lebih kecil dari 6 -> [4,1]
+> Bagian Kanan : Kumpulkan semua elemen yang lebih besar dari 6 -> [10,7]
+
+ *Langkah 2 (Conquer)
+Urutkan [4,1] -> hasilnya [1,4]
+Urutkan [10,7] -> hasilnya [7,10]
+
+ *Langkah 3 (Combine)
+Gabungkan hasil menjadi array terurut: [1,4]+[6]+[7,10]
+Hasil akhir : [1,4,6,7,10]
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+
+# Sorting berdasarkan pembagian yang bergantung pada data (data-dependent divide)
+sort_data_dep <- function(arr) {
+  
+  # Base case
+  if (length(arr) <= 1) {
+    return(arr)
+  }
+  
+  # Pivot ditentukan dari data: misalnya ambil elemen pertama
+  pivot <- arr[1]
+  
+  # Data dependence divide:
+  # Elemen < pivot masuk kiri
+  # Elemen >= pivot masuk kanan
+  left_part  <- arr[arr < pivot]
+  right_part <- arr[arr > pivot]
+  equal_part <- arr[arr == pivot]
+  
+  # Rekursi
+  sorted_left  <- sort_data_dep(left_part)
+  sorted_right <- sort_data_dep(right_part)
+  
+  # Combine
+  return(c(sorted_left, equal_part, sorted_right))
+}
+
+# Contoh array
+nilai <- c(10, 4, 7, 6, 1)
+
+# Jalankan fungsi
+sort_data_dep(nilai)
+  
+
+#4. CONTROL PARALLELISM ATAU SEQUENTIALLY
+
+Control Parallelism merupakan metode pemrosesan yang memungkinkan beberapa
+bagian dari suatu permasalahan dijalankan secara bersamaan menggunakan lebih 
+dari satu sumber daya komputasi. Sedangkan Sequentially adalah pendekatan
+pemrosesan yang dilakukan secara berurutan, di mana setiap bagian masalah 
+diselesaikan satu per satu sesuai urutan pembagiannya. Tidak ada dua bagian 
+yang dikerjakan secara bersamaan, sehingga proses berjalan langkah demi langkah
+secara sistematis.
+
+|~~~| CONTOH KASUS |~~~|
+
+#1. Menghitung Jumlah (SUM) dengan Control Parallelism
+Jika Array [ 8,1,3,5,2]
+
+ *Langkah 1 (Divide)
+Pecah array menjadi dua bagian yang lebih kecil untuk diproses secara pararel :
+Bagian 1 :[8,1]
+Bagian 2 :[3,5]
+Bagian 3 :[2]
+
+ *Langkah 2 (Parllel Processing)
+Hitung jumlah di setiap bagian secara paralel :
+Bagian 1 : 8+1 = 9
+Bagian 2 : 3+5 = 8
+Bagian 3 : 2
+
+ *Langkah 3 (Combine)
+Gabungkan hasil dari semua bagian :
+Jumlah total : 9+8+2 = 19
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+# Fungsi untuk menghitung jumlah (sum) dengan control parallelism
+sum_parallel <- function(arr) {
+  
+  # Base case: hanya satu elemen
+  if (length(arr) == 1) {
+    return(arr[1])
+  }
+  
+  # Bagi array menjadi dua bagian "seolah-olah" paralel
+  mid <- floor(length(arr) / 2)
+  left_part  <- arr[1:mid]
+  right_part <- arr[(mid + 1):length(arr)]
+  
+  # Dua proses rekursif yang berjalan independen (paralel)
+  left_sum  <- sum_parallel(left_part)
+  right_sum <- sum_parallel(right_part)
+  
+  # Combine hasil
+  return(left_sum + right_sum)
+}
+
+# Contoh array
+nilai <- c(8, 1, 3, 5, 2)
+
+# Jalankan fungsi
+sum_parallel(nilai)
+
+
+#2. Mencari Elemen Maksimal dengan Control Parallelism
+Jika Array [9,6,2,1,7]
+
+ *Langkah 1 (Divide)
+Pecah array menjadi beberapa bagian yang lebih kecil untuk diproses secara 
+paralel :
+Bagian 1 : [9,6]
+Bagian 2 : [2,1]
+Bagian 3 : [7]
+
+ *Langkah 2 ( Prallel Processing)
+Cari elemen maksimal di setiap bagian secara paralel :
+Bagian 1 : max(9,6) = 9
+Bagian 2 : max(2,1) = 2
+Bagian 3 : 7
+
+ *Langkah 3 (Combine)
+Bandingkan hasil dari semua bagian :
+Elemen maksimal : max (9,2,7) = 9
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+  # Mencari Elemen Maksimal dengan Control Parallelism
+max_control_parallel <- function(arr) {
+  cat("Array awal:", arr, "\n")
+  
+  # Tahap 1: bandingkan pasangan
+  cat("\nTahap 1: Pairwise Comparison\n")
+  hasil1 <- c()
+  for (i in seq(1, length(arr), by = 2)) {
+    if (i == length(arr)) {
+      hasil1 <- c(hasil1, arr[i])    # elemen terakhir tanpa pasangan
+      cat(arr[i], "tidak punya pasangan -> masuk langsung\n")
+    } else {
+      m <- max(arr[i], arr[i+1])
+      hasil1 <- c(hasil1, m)
+      cat("max(", arr[i], ",", arr[i+1], ") =", m, "\n")
+    }
+  }
+  
+  cat("Hasil tahap 1:", hasil1, "\n")
+  
+  # Tahap 2: bandingkan kembali hasil tahap 1
+  cat("\nTahap 2: Reduce Comparison\n")
+  hasil2 <- hasil1[1]
+  for (j in 2:length(hasil1)) {
+    hasil2 <- max(hasil2, hasil1[j])
+    cat("max(", hasil2, ",", hasil1[j], ") ->", hasil2, "\n")
+  }
+  
+  cat("\nElemen maksimal =", hasil2, "\n")
+  return(hasil2)
+}
+
+# Jalankan fungsi
+max_control_parallel(c(9, 6, 2, 1, 7))
+
+
+#3. Menghitung Jumlah (SUM) secara Sequentially
+Jika Array [2,4,1,6,10]
+
+ *Langkah 1
+Inisialisasi jumlah total dengan nilai 0
+
+ *Langkah 2
+Iterasi melalui array secara berurutan :
+=> Tambahkan elemen 2 ke jumlah total : 2+0 = 2
+=> Tambahkan elemen 4 ke jumlah total : 2+4 = 6
+=> Tambahkan elemen 1 ke jumlah total : 6+1 = 7
+=> Tambahkan elemen 6 ke jumlah total : 7+6 = 11
+=> Tambahkan elemen 10 ke jumlah total : 11+10 =21
+
+ *Langkah 3
+Kembalikan hasil : 21
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+# Menghitung Jumlah (SUM) secara Sequentially
+sum_sequential <- function(arr) {
+  total <- 0
+  cat("Proses penjumlahan secara sequential:\n")
+  
+  for (i in arr) {
+    cat(total, "+", i, "=", total + i, "\n")
+    total <- total + i
+  }
+  
+  cat("\nTotal SUM =", total, "\n")
+  return(total)
+}
+
+# Jalankan fungsi
+sum_sequential(c(2, 4, 1, 6, 10))
+
+
+# Mencari Elemen Maksimal secara Sequentially
+Jika Array [2,5,3,7,8]
+
+ *Langkah 1 
+Inisilisasi nilai maksimal dengan elemen pertama yaitu 2
+
+ * Langkah 2
+Iteras melalui array secara berurutan :
+=> Bandingkan elemen 5 dengan nilai maksimal : Update menjadi 5
+=> Bandingkan elemen 3 dengan nilai maksimal : Tetap 5
+=> Bandingkan elemen 7 dengan nilai maksimal : Update menjadi 7
+=> Bandingkan elemen 8 dengan nilai maksimal : Update menajdi 8
+
+ *Langkah 3 
+Kembalikan hasil : 8
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+# Mencari elemen maksimal secara Sequentially
+max_sequential <- function(arr) {
+  max_val <- arr[1]
+  cat("Proses pencarian maksimal secara sequential:\n")
+  cat("Mulai dengan:", max_val, "\n\n")
+  
+  for (i in 2:length(arr)) {
+    cat("Bandingkan", max_val, "dengan", arr[i], "\n")
+    if (arr[i] > max_val) {
+      cat("-> Update max menjadi", arr[i], "\n")
+      max_val <- arr[i]
+    } else {
+      cat("-> Tetap", max_val, "\n")
+    }
+    cat("\n")
+  }
+  
+  cat("Elemen maksimal adalah:", max_val, "\n")
+  return(max_val)
+}
+
+# Jalankan fungsi
+max_sequential(c(2, 5, 3, 7, 8))
+
+
+#4. Mengurutkan (Sorting) secara Sequentially
+Jika Array [8,6,2,10,4]
+
+ *Langkah 1
+Mulai iterasi dari elemen pertama dan bandingkan elemen yang berdekatan
+
+ *Langkah 2
+Jika elemen di kiri lebih besar, tukar posisi
+
+ *Langkah 3 
+Ulangi langkah ini hingga array terurut :
+=> Iterasi 1 : [6,2,8,4,10] 
+=> Iterasi 2 : [2,6,4,8,10]
+=> Iterasi 3 : [2,4,6,8,10]
+
+ *Langkah 4 
+Kembalikan array terurut : [2,4,6,8,10]
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+# Mengurutkan (Sorting) secara Sequentially
+sequential_sort <- function(arr) {
+  n <- length(arr)
+  cat("Proses Sorting Secara Sequential:\n\n")
+  
+  for (i in 1:(n-1)) {
+    cat("Iterasi ke-", i, ":\n", sep = "")
+    
+    for (j in 1:(n - i)) {
+      cat(" Bandingkan", arr[j], "dengan", arr[j+1], "\n")
+      
+      if (arr[j] > arr[j+1]) {
+        cat("  -> Tukar", arr[j], "dengan", arr[j+1], "\n")
+        temp <- arr[j]
+        arr[j] <- arr[j+1]
+        arr[j+1] <- temp
+      } else {
+        cat("  -> Tidak tukar\n")
+      }
+    }
+    cat(" Hasil sementara:", arr, "\n\n")
+  }
+  
+  cat("Hasil akhir (sorted):", arr, "\n")
+  return(arr)
+}
+
+# Jalankan fungsi
+sequential_sort(c(8, 6, 2, 10, 4))
+
+    
+----------* #B. METODE SORTING *----------
+  
+  Sorting adalah cara untuk menyusun kumpulan data agar berada dalam urutan
+tertentu sesuai aturan, seperti dari yang terkecil ke terbesar, atau sebaliknya.
+tujuannya untuk mengubah data yang tidak teratur menjadi urutan yang teratur,
+misalnya dari data yang tidak terurut menjadi data yang terurut menaik atau
+menurun.
+Biasanya, metode penyortiran dibagi menjadi dua kelompok: Comparison Sort dan
+Non-Comparison Sort
+
+#1. Comparison Sort
+
+Comparison Sort adalah algoritma yang menentukan urutan penyortiran dengan
+membandingkan elemen satu dengan elemen lain nya. Setiap proses pengurutan
+dilakukan berdasarkan operasi perbandingan seperti \<, \>, atau ==. Kumpulan
+metodeini cocok untuk data umum, tetapi beberapa di antaranya tidak cukup cepat 
+untuk kumpulan data yang sangat besar.
+Algoritma yang termasuk dalam Comparison Sort antara lain:
+ 
+a. BUBBLE SORT
+Membandingkan setiap elemen dengan elemen berikutnya, dan menukar posisinya jika 
+urutannya salah. Proses ini diulang sampai semua elemen terurut.
+
+<>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
+  
+1. Loop Luar (Iterasi - i):
+  · Loop ini berjalan dari i = 1 hingga n-1.
+  · Tugasnya adalah mengulangi proses penyisiran. i menghitung berapa banyak
+    elemen yang sudah ter-sortir di akhir array.
+2. Loop Dalam (Perbandingan & Tukar - j):
+  · Loop ini bertugas melakukan penyisiran.
+  · la berjalan dari j = 1 hingga n - i. (Ini adalah penyesuaian kuncinya. 
+    Di setiap iterasi i, jangkauan j berkurang 1 dari belakang).
+  · Di dalam loop ini, kita membandingkan vektor[j] dengan vektor[j+1].
+  · Jika vektor[j] > vektor[j+1], maka tukar (swap).
+                                        
+|~~~| CONTOH KASUS |~~~|
+  
+Di sebuah perpustakaan, jumlah buku yang dipinjam dalam lima minggu terakhir 
+adalah: 36, 34, 21, 38, dan 22 buku.
+Urutkan jumlah buku tersebut dari yang paling sedikit ke yang paling banyak.  
+Vektor Awal: [36, 34, 21, 38, 22] (n = 5)
+
+Iterasi 1 (i = 1)
+· j=1: [ ** 36 ** , ** 34 ** , 21, 38, 22] (Bandingkan vektor[1] & vektor[2])
+· Apakah 36 > 34? Ya. Tukar.
+· Hasil: [34, 36, 21, 38, 22]
+· j=2: [34,** 36 **, ** 21*, 38, 22] (Bandingkan vektor[2] & vektor[3])
+· Apakah 36 > 21? Ya. Tukar.
+· Hasil: [34, 21, 36, 38, 22]
+· j=3: [34, 21, ** 36 ** , ** 38 ** , 22] (Bandingkan vektor[3] & vektor[4])
+· Apakah 36 > 38? Tidak.
+· Hasil: [34, 21, 36, 38, 22]
+· j=4: [34, 21, 36, ** 38 ** , ** 22 ** ] (Bandingkan vektor[4] & vektor[5])
+· Apakah 38 > 22? Ya. Tukar.
+· Hasil: [34, 21, 36, 22, 38]
+Hasil Iterasi 1: [34, 21, 36, 22, 38] (Angka 38 di vektor[5] sudah benar)
+
+Iterasi 2 (i = 2)
+· j=1: [ ** 34 ** , ** 21 ** , 36, 22, 38] (Bandingkan vektor[1] & vektor[2])
+· Apakah 34 > 21? Ya. Tukar.
+· Hasil: [21, 34, 36, 22, 38]
+· j=2: [21, ** 34 ** , ** 36 ** , 22, 38] (Bandingkan vektor[2] & vektor[3])
+· Apakah 34 > 36? Tidak.
+· Hasil: [21, 34, 36, 22, 38]
+· j=3: [21, 34, ** 36 ** , ** 22 ** , 38] (Bandingkan vektor[3] & vektor[4])
+· Apakah 36 > 22? Ya. Tukar.
+· Hasil: [21, 34, 22, 36, 38]
+Hasil Iterasi 2: [21, 34, 22, 36, 38] (Angka 36 di vektor[4] sudah benar)
+
+iterasi 3 (i = 3)
+vektor[2])
+Bubble Sort (Min-Max)
+· j=1: [ ** 21 ** , ** 34 ** , 22, 36, 38] (Bandingkan vektor[1] &
+· Apakah 21 > 34? Tidak.
+· Hasil: [21, 34, 22, 36, 38]
+· j=2: [21, ** 34 ** , ** 22 ** , 36, 38] (Bandingkan vektor[2] & vektor[3])
+· Apakah 34 > 22? Ya. Tukar.
+· Hasil: [21, 22, 34, 36, 38]
+Hasil Iterasi 3: [21, 22, 34, 36, 38] (Angka 34 di vektor[3] sudah benar)
+
+Iterasi 4 (i = 4)
+vektor[2])
+· j=1: [ ** 21 ** , ** 22 ** , 34, 36, 38] (Bandingkan vektor[1] & vektor[2]
+· Apakah 21 > 22? Tidak.
+· Hasil: [21, 22, 34, 36, 38]
+Hasil Iterasi 4: [21, 22, 34, 36, 38] (Tidak ada perubahan)
+Hasil Akhir (Terurut): [21, 22, 34, 36, 38]
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+  
+  bubble_sort <- function(data) {
+    n <- length(data)
+    for (i in 1:(n-1)) {
+      for (j in 1:(n-i)) {
+        if (data[j] > data[j+1]) {
+          temp <- data[j]
+          data[j] <- data[j+1]
+          data[j+1] <- temp
+        }
+      }
+    }
+    return(data)
+  }
+
+jumlah_buku <- c(36, 34, 21, 38, 22)
+bubble_sort(jumlah_buku)
+
+output:
+[1] 21 22 34 36 38
+
+
+b. SELECTION SORT
+  Memilih elemen terkecil dari bagian tidak terurut, kemudian menempatkannya di 
+posisi yang sesuai pada bagian terurut. Selection Sort (Sortir Pilih) bekerja
+dengan membagi array menjadi dua bagian yaitu bagian terurut (di sebelah kiri) 
+dan bagian acak (di sebelah kanan).
+
+<>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
+
+Langkah Penyelesaian Algoritma (Indeks 1)
+1. Loop Luar (Iterasi - i):
+  · Loop ini berjalan dari i = 1 hingga n-1.
+  · i adalah indeks batas antara bagian terurut dan acak. Ini adalah posisi
+    target yang ingin kita isi.
+2. Loop Dalam (Pencarian - j):
+  · Asumsikan elemen di i adalah yang terkecil (idx_terkecil = i).
+  · Loop ini berjalan dari j = i + 1 hingga n (sampai akhir array).
+  · Kita mencari: Jika vektor[j] < vektor[idx_terkecil], maka perbarui
+    idx_terkecil = j.
+3. Tukar (Swap):
+  · Setelah loop dalam (j) selesai, kita tukar posisi elemen di vektor[i] 
+    dengan elemen di vektor[idx_terkecil]
+    
+|~~~| CONTOH KASUS |~~~|    
+    
+Seorang teknisi komputer mencatat ukuran file backup: 780 MB, 520 MB, 170 MB, 
+910 MB, dan 3600 MB. Ia ingin mengurutkan ukuran file dari yang terbesar untuk 
+mengetahui mana file yang ukurannya paling besar
+
+Iterasi 1 (i = 1)
+> Posisi Target: i = 1
+> Vektor: [780, 520, 170, 910, 360] (Indeks: 1, 2, 3, 4, 5)
+Proses:
+· Asumsikan idx_terbesar = 1 (nilai 780).
+· Cari di sisa array (indeks 2 s/d 5):
+  · j = 2: vektor[2] (520) > vektor[1] (780)? Tidak.
+  · j = 3: vektor[3] (170) > vektor[1] (780)? Tidak.
+  · j = 4: vektor[4] (910) > vektor[1] (780)? Ya → idx_terbesar = 4.
+  · j = 5: vektor[5] (360) > vektor[4] (910)? Tidak.
+· Loop dalam selesai. Elemen terbesar ada di idx_terbesar = 4 (nilai 910).
+> Tukar vektor[1] (780) dengan vektor[4] (910).
+Hasil Iterasi 1:[9, 5, 1, 7, 3]
+
+Iterasi 2 (i = 2)
+> Posisi Target: i = 2
+> Vektor: [910, 520, 170, 780, 360]
+Proses:
+· Asumsikan idx_terbesar = 2 (nilai 520).
+· Cari di sisa array (indeks 3 s/d 5)
+  · j = 3: vektor[3] (170) > 520? Tidak
+  · j = 4: vektor[4] (780) > 520? Ya → idx_terbesar = 4
+  · j = 5: vektor[5] (360) > 780? Tidak
+· Loop selesai. Elemen terbesar ada di idx_terbesar = 4 (nilai 780).
+> Tukar vektor[2] (520) dengan vektor[4] (780).
+Hasil Iterasi 2:[910, 780, 170, 520, 360]
+
+Iterasi 3 (i = 3)
+
+> Posisi Target: i = 3
+> Vektor: [910, 780, 170, 520, 360]
+Proses:
+· Asumsikan idx_terbesar = 3 (nilai 170).
+· Cari di sisa array (indeks 4 s/d 5):
+  · j = 4: vektor[4] (520) > 170? Ya → idx_terbesar = 4
+  · j = 5: vektor[5] (360) > 520? Tidak
+· Loop selesai. Elemen terbesar ada di idx_terbesar = 4 (nilai 520).
+> Tukar vektor[3] (170) dengan vektor[4] (520).
+Hasil Iterasi 3:[910, 780, 520, 170, 360]
+
+Iterasi 4 (i = 4)
+
+> Posisi Target: i = 4
+> Vektor: [910, 780, 520, 170, 360]
+Proses:
+· Asumsikan idx_terbesar = 4 (nilai 170).
+· Cari di sisa array (indeks 5):
+  · j = 5: vektor[5] (360) > 170? Ya → idx_terbesar = 5
+· Loop selesai. Elemen terbesar ada di idx_terbesar = 5 (nilai 360).
+> Tukar vektor[4] (170) dengan vektor[5] (360).
+Hasil Iterasi 4:[910, 780, 520, 360, 170]
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+  selection_sort <- function(data) {
+    n <- length(data)
+    for (i in 1:(n-1)) {
+      min_index <- i
+      for (j in (i+1):n) {
+        if (data[j] > data[min_index]) {
+          min_index <- j
+        }
+      }
+      if (min_index != i) {
+        temp <- data[i]
+        data[i] <- data[min_index]
+        data[min_index] <- temp
+      }
+    }
+    return(data)
+  }
+
+ukuran_file <- c(780, 520, 170, 910, 360)
+selection_sort(ukuran_file)
+
+c. INSERTION SEARCH
+
+Insertion search yaitu memasukkan setiap elemen ke posisi yang benar di bagian 
+terurut dari array. Algoritma ini menagambil elemen utama dari bagian teracak 
+lalu menyisipkannya ke posisi yang tepat dalam bagian terurut.
+
+<>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
+
+1. Loop Luar (Iterasi - i):
+· Loop ini dimulai dari elemen kedua (i = 2) hingga n. 
+(Kita asumsikan vektor[1] sudah "terurut" dengan sendirinya).
+· i adalah penunjuk elemen yang akan kita sisipkan.
+2. Simpan key:
+· key = vektor[i]. Simpan nilai yang akan disisipkan.
+· j = i - 1. j adalah penunjuk untuk menyisir bagian terurut (di sebelah kiri i), 
+dari kanan ke kiri.
+3.Loop Dalam (Pergeseran - while):
+· Selama j > 0 (kita belum sampai ujung kiri) DAN vektor[j] > key 
+(elemen di bagian terurut lebih besar dari key):
+· Geser (Shift): vektor[j + 1] = vektor[j]. 
+(Geser elemen yang lebih besar itu ke kanan untuk memberi ruang).
+· Mundur: j = j - 1. (Pindah untuk mengecek elemen di kirinya lagi).
+4.Sisipkan (Insert):
+· Setelah loop while berhenti, kita telah menemukan posisi yang tepat.
+· vektor[j + 1] = key. Masukkan key ke "lubang" yang sudah kita buat.
+
+|~~~| CONTOH KASUS |~~~| 
+
+Sebuah toko alat tulis ingin menyusun kembali stok pensil berdasarkan jumlah isi
+per kotak. Stok pensil tersebut tercatat sebagai berikut (dalam jumlah isi):
+Kotak A = 24 pensil  
+Kotak B = 18 pensil  
+Kotak C = 10 pensil  
+Kotak D = 30 pensil  
+Kotak E = 15 pensil
+Urutkan jumlah pensil di setiap kotak tersebut menggunakan algoritma insertion Sort.
+Vektor Awal: [24, 18, 10, 30, 15] (n = 5)
+
+Iterasi 1 (i = 2)
+
+> Vektor:[24 | **18**, 10, 30, 15]
+> key = vektor[2] (yaitu 18).j mulai dari 1.
+> Proses while: 
+· j = 1: Apakah vektor[1] (24) > key (18)? Ya.
+· Geser: vektor[2] = vektor[1] Vektor menjadi: [24, 24, 10, 30, 15]
+· j menjadi 0.
+> Loop while berhenti (karena j tidak > 0).
+> Sisipkan: vektor[j + 1] = vektor[1] = key (18)
+Hasil Iterasi 1: [18, 24, 10, 30, 15]
+
+Iterasi 2 (i = 3)
+
+> Vektor: [18, 24 | **10**, 30, 15]
+> key = 10
+> j = 2
+Proses while:
+· j = 2: vektor[2] (24) > 10? Ya→ Geser: [18, 24, 24, 30, 15]
+  j = 1
+· j = 1: vektor[1] (18) > 10? Ya→ Geser: [18, 18, 24, 30, 15]
+  j = 0
+> Loop berhenti (j tidak > 0).
+> Sisipkan: vektor[1] = 10
+Hasil Iterasi 2: [10, 18, 24, 30, 15]
+
+Iterasi 3 (i = 4)
+
+> Vektor: [10, 18, 24 | 30, 15]
+> key = 30
+> j = 3
+Proses while:
+· j = 3: vektor[3] (24) > 30? Tidak→ Loop berhenti.
+Tidak ada geseran.
+> Sisipkan: Posisi sudah benar → tetap.
+Hasil Iterasi 3: [10, 18, 24, 30, 15]
+
+Iterasi 4 (i = 5)
+
+> Vektor: [10, 18, 24, 30 |**15**]
+> key = 15
+> j = 4
+Proses while:
+· j = 4:vektor[4] (30) > 15? Ya→ Geser: [10, 18, 24, 30, 30]
+  j = 3
+· j = 3:vektor[3] (24) > 15? Ya → Geser: [10, 18, 24, 24, 30]
+  j = 2
+· j = 2: vektor[2] (18) > 15? Ya→ Geser: [10, 18, 18, 24, 30]
+  j = 1
+· j = 1: vektor[1] (10) > 15? Tidak → Loop berhenti
+> Sisipkan: vektor[j + 1] = vektor[2] = 15
+Hasil Iterasi 4: [10, 15, 18, 24, 30]
+
+Hasil Akhir Insertion Sort: [10, 15, 18, 24, 30]
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+insertion_sort <- function(data) {
+  for (i in 2:length(data)) {
+    key <- data[i]
+    j <- i - 1
+    while (j > 0 && data[j] > key) {
+      data[j+1] <- data[j]
+      j <- j - 1
+    }
+    data[j+1] <- key
+  }
+  return(data)
+}
+
+data <- c(24, 18, 10, 30, 15)
+insertion_sort(data)
+
+D. MERGE SORT 
+
+Merge Sort adalah algoritma Divide and Conquer (D&C). Logikanya adalah memecah
+(Divide) array secara rekursif menjadi sub-array yang lebih kecil hingga setiap sub
+array hanya memiliki satu elemen, Kemudian, ia menggabungkan sub-array yang sudah terurut itu kembali, satu per satu, hingga menjadi satu array utuh yang terurut.
+
+<>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
+
+Algoritma ini pada dasarnya adalah dua fungsi:
+1.Fungsi Utama (merge_sort):
+> Divide: Menerima sebuah vektor. Jika panjang vektor (n) > 1:
+  Tentukan titik tengah: tengah = floor(n / 2).
+  Buat sub-vektor kiri: kiri = vektor[1:tengah].
+  Buat sub-vektor kanan: kanan = vektor[(tengah +1):n].
+> Conquer: Panggil merge_sort secara rekursif untuk kedua bagian:
+  kiri_terurut = merge_sort(kiri)
+  kanan_terurut = merge_sort(kanan)
+> Combine: Panggil fungsi merge untuk menggabungkan hasilnya:
+  hasil = merge(kiri_terurut, kanan_terurut)
+  Kembalikan hasil.
+  Jika n = 1, kembalikan vektor itu sendiri (karena sudah terurut)
+  
+2. Fungsi Pembantu (merge):
+> Menerima dua array yang sudah terurut (kiri dan kanan).
+> Membuat satu array hasil yang kosong.
+> Membandingkan elemen pertama kiri dan kanan. Ambil yang terkecil, masukkan ke hasil,   dan geser penunjuk (indeks) di array tersebut.
+> Ulangi terus hingga salah satu array habis.
+> Masukkan semua sisa elemen dari array yang belum habis ke hasil.
+> Kembalikan hasil.
+
+|~~~| CONTOH KASUS |~~~|
+
+Sebuah perusahaan ekspedisi sedang menyiapkan daftar paket yang harus dikirim pada hari ini. Karena jumlah paket cukup banyak dan data harus diurutkan dengan cepat, perusahaan memutuskan menggunakan algoritma Merge Sort, yang dikenal sangat efisien untuk data dalam jumlah besar.
+Berikut adalah berat paket (dalam kilogram) yang harus diurutkan dari yang paling ringan ke yang paling berat:
+12 kg, 8 kg, 2 kg, 15 kg, 3 kg, 
+
+Vektor Awal: [12, 8, 2, 15, 3] (n = 5)
+
+Vektor Awal: [12, 8, 2, 15, 3] (n = 5) 
+Tahap 1: Divide (Memecah)
+Proses ini terjadi top-down hingga base case (1 elemen).
+1.[12, 8, 2, 15, 3] (n=5) → tengah = floor(5/2) = 2
+2.Pecah jadi kiri = [12, 8] dan kanan = [2, 15, 3]
+3.[12, 8] (n=2) → tengah = 1
+4.Pecah jadi kiri = [12] (Base case) dan kanan = [8] (Base
+case)
+5.[2, 15, 3] (n=3) → tengah = 1
+6.Pecah jadi kiri = [1] (Base case) dan kanan = [15, 3]
+7.[15, 3] (n=2) → tengah = 1
+8.Pecah jadi kiri = [15] (Base case) dan kanan = [3] (Base
+case)
+
+Tahap 2: Combine (Menggabungkan)
+Proses ini terjadi bottom-up, mengurutkan sambil
+menggabung.
+1.Combine [12] dan [8]:
+· Bandingkan 12 dan 8. 8 lebih kecil.
+Hasil: [8, 12]
+2.Combine [15] dan [3]:
+· Bandingkan 15 dan 3. 3 lebih kecil.
+Hasil: [3, 15]
+3.Combine [1] dan [3, 15]:
+· Bandingkan 2 dan 3. 2 lebih kecil.
+· Array [1] habis. Masukkan sisa [3, 15].
+Hasil: [2, 3, 15]
+4. Combine [8, 12] dan [2, 3, 15] (Langkah Final):
+· Bandingkan 8 dan 3. 3 lebih kecil. → Hasil: [2, 3]
+· Bandingkan 8 dan 15. 8 lebih kecil. → Hasil: [2, 3, 8]
+· Bandingkan 12 dan 15. 12 lebih kecil. → Hasil: [2, 3, 8, 12]
+· Array [8, 12] habis. Masukkan sisa [15].
+Hasil: [2, 3, 8, 12, 15]
+Hasil Akhir (Terurut): [2, 3, 8, 12, 15]
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+merge_sort <- function(data) {
+  if (length(data) <= 1) return(data)
+  mid <- floor(length(data) / 2)
+  left <- merge_sort(data[1:mid])
+  right <- merge_sort(data[(mid+1):length(data)])
+  return(merge(left, right))
+}
+
+merge <- function(left, right) {
+  sorted <- c()
+  while (length(left) > 0 && length(right) > 0) {
+    if (left[1] <= right[1]) {
+      sorted <- c(sorted, left[1])
+      left <- left[-1]
+    } else {
+      sorted <- c(sorted, right[1])
+      right <- right[-1]
+    }
+  }
+  return(c(sorted, left, right))
+}
+
+berat_paket <- c(12, 8, 2, 15, 3)
+merge_sort(berat_paket)
+
+e. QUICK SORT 
+
+Quick Sort bekerja dengan memilih satu elemen sebagai Pivot. Kemudian, ia menyusun ulang array sehingga semua elemen yanglebih kecil dari Pivot berada di kirinya, dan semua elemen yang lebih besar berada di kanannya
+
+<>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
+
+1.Fungsi Utama (quick_sort):
+> Menerima sebuah vektor.
+> Base Case: Jika panjang vektor (n) adalah 0 atau 1, kembalikan vektor itu sendiri (sudah terurut).
+> Divide (Partition):
+· Pilih Pivot: Kita pilih elemen terakhir sebagai pivot. pivot = vektor[n].
+· Buat 2 vektor kosong: kiri dan kanan.
+· Iterasi i dari 1 hingga n-1 (semua elemen selain pivot):
+  Jika vektor[i] < pivot, masukkan ke kiri. Jika vektor[i] >= pivot, masukkan ke kanan.
+> Conquer:
+· Panggil quick_sort secara rekursif untuk kedua bagian:
+  kiri_terurut = quick_sort(kiri)
+  kanan_terurut = quick_sort(kanan)
+> Combine: Gabungkan hasilnya. Pivot diletakkan di tengah.
+· Kembalikan c(kiri_terurut, pivot, kanan_terurut)
+
+|~~~| CONTOH KASUS |~~~|
+
+HRD menerima daftar umur pelamar: [24, 30, 21, 27, 35, 29, 23] HRD ingin mengurutkan umur pelamar dari yang paling tua ke yang paling muda menggunakan Quick Sort
+
+Vektor Awal: [24, 30, 21, 27, 35, 29, 23]
+Kita akan menelusuri panggilan rekursifnya. Q(…) adalah panggilan fungsi quick_sort.
+
+1. Panggil Q([24, 30, 21, 27, 35, 29, 23])
+Pivot: 23 (elemen terakhir)
+Partisi (descending → elemen ≥ pivot masuk kiri):
+24 ≥ 23 → kiri = [24]
+30 ≥ 23 → kiri = [24, 30]
+21 < 23 → kanan = [21]
+27 ≥ 23 → kiri = [24, 30, 27]
+35 ≥ 23 → kiri = [24, 30, 27, 35]
+29 ≥ 23 → kiri = [24, 30, 27, 35, 29]
+Struktur Rekursif: c( Q([24, 30, 27, 35, 29]), 23, Q([21]) )
+
+2. Panggil Q([24, 30, 27, 35, 29]) (dari kiri)
+Pivot: 29
+Partisi:
+24 < 29 → kanan = [24]
+30 ≥ 29 → kiri = [30]
+27 < 29 → kanan = [24, 27]
+35 ≥ 29 → kiri = [30, 35]
+Struktur Rekursif:c( Q([30, 35]), 29, Q([24, 27]) )
+
+3. Panggil Q([30, 35]) (dari kiri)
+Pivot: 35
+Partisi:
+30 < 35 → kanan = [30]
+Struktur Rekursif:c( Q([]), 35, Q([30]) ) 
+
+4. Panggil Q([])
+Base Case (n = 0). Kembalikan [].
+
+5. Panggil Q([30])
+Base Case (n = 1). Kembalikan [30].
+→ Combine Level:c([], 35, [30]) → [35, 30]
+
+6. Panggil Q([24, 27]) (dari kanan)
+Pivot: 27
+Partisi:
+24 < 27 → kanan = [24]
+Struktur Rekursif:c( Q([]), 27, Q([24]) )
+
+7. Panggil Q([])
+Base Case → []
+
+8. Panggil Q([24])
+Base Case → [24]
+→ Combine Level:c([], 27, [24]) → [27, 24]
+Combine Level besar untuk langkah 2:
+c([35, 30], 29, [27, 24]) → [35, 30, 29, 27, 24]
+
+9. Panggil Q([21]) (dari kanan)
+Base Case (n = 1). Kembalikan [21]
+
+Combine Akhir (langkah 1):
+c([35, 30, 29, 27, 24], 23, [21]) → [35, 30, 29, 27, 24, 23, 21]
+
+Hasil Akhir (Tertua → Termuda): [35, 30, 29, 27, 24, 23, 21]
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+quick_sort <- function(arr) {
+  if (length(arr) <= 1) return(arr)
+  pivot <- arr[length(arr)]
+  left <- arr[arr > pivot]
+  right <- arr[arr < pivot]
+  middle <- arr[arr == pivot]
+  return(c(quick_sort(left), middle, quick_sort(right)))
+}
+
+nilai <- c(24, 30, 21, 27, 35, 29, 23)
+quick_sort(nilai)
+
+
+#2. NON-COMPARISON SORT
+
+Non-comparison sort adalah algoritma yang tidak membandingkan elemen-elemen data satu sama lain. Algoritma dalam kelompok ini memanfaatkan karakteristik dari data itu sendiri, seperti jumlah digit yang dimiliki atau frekuensinya.
+
+a. RADIX SORT
+
+Radix Sort (Sortir Digit) adalah algoritma yang mengurutkan data dengan
+mengelompokkannya berdasarkan digit per digit. Mulai dari satuan, lalu ke puluhan, ratusan, dan seterusnya
+
+ <>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
+ 
+1.Cari Digit Maksimal: Temukan angka dengan digit terbanyak (misal, 99 atau 100). Ini
+menentukan berapa kali kita harus mengulang proses.
+2.Loop (Digit): Lakukan loop untuk setiap digit (eksponen), mulai dari 1 (satuan), lalu 10
+(puluhan), 100 (ratusan), dst.
+3.Sortir per Digit: Di dalam setiap loop digit, urutkan seluruh array menggunakan Counting
+Sort (atau algoritma stabil lainnya), tetapi berdasarkan nilai digit saat itu.
+(Misal, saat di digit satuan, 17 dan 2 akan dikelompokkan berdasarkan 7 dan 2. Saat
+di digit puluhan, 17 dan 02 akan dikelompokkan berdasarkan 1 dan 0).
+4.Setelah loop untuk digit terbesar selesai, array akan terurut sempurna.
+
+|~~~| CONTOH KASUS |~~~|
+
+Seorang petugas administrasi di sebuah perusahaan teknologi sedang mengolah data nomor tiket servis yang masuk pada hari itu. Nomor tiket tersebut tidak disusun secara berurutan karena datang pada waktu yang berbeda-beda.
+
+Nomor tiket yang tercatat adalah: [329, 45, 7, 88, 501, 23, 90, 4]
+
+Manajer meminta petugas untuk mengurutkan nomor tiket dari yang paling kecil ke yang paling besar agar mudah disusun dalam arsip.
+Petugas diminta menggunakan metode Radix Sort agar proses pengurutan lebih cepat, karena jumlah datanya sangat banyak.
+
+Iterasi 1: Sortir berdasarkan Digit Satuan (eksponen 1)
+
+Digit satuannya:
+329 → 9
+45 → 5
+7 → 7
+88 → 8
+501 → 1
+23 → 3
+90 → 0
+4 → 4
+
+Masukkan ke dalam urutan Counting Sort berdasarkan digit satuan (0 → 9):
+0: 90
+1: 501
+3: 23
+4: 4
+5: 45
+7: 7
+8: 88
+9: 329
+Hasil Iterasi 1 (Ascending):
+[90, 501, 23, 4, 45, 7, 88, 329]
+
+Iterasi 2: Sortir berdasarkan Digit Puluhan (eksponen 10)
+
+Ambil digit puluhan dari hasil iterasi 1:
+90 → 9
+501 → 0
+23 → 2
+4 → 0
+45 → 4
+7 → 0
+88 → 8
+329 → 2
+
+Bucket puluhan (0 → 9):
+0: 501, 4, 7*
+2: 23, 329
+4: 45
+8: 88
+9: 90
+Hasil Iterasi 2 (Ascending):
+[501, 4, 7, 23, 329, 45, 88, 90]
+
+Iterasi 3: Sortir berdasarkan Digit Ratusan (eksponen 100)
+
+Digit ratusan:
+501 → 5
+4 → 0
+7 → 0
+23 → 0
+329 → 3
+45 → 0
+88 → 0
+90 → 0
+
+Bucket:
+0: 4, 7, 23, 45, 88, 90
+3: 329
+5: 501
+Hasil Iterasi 3 (Ascending):
+[4, 7, 23, 45, 88, 90, 329, 501]
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+radix_sort <- function(arr) {
+  max_val <- max(arr)
+  exp <- 1
+  while (max_val %/% exp > 0) {
+    buckets <- vector("list", 10)
+    for (x in arr) {
+      digit <- (x %/% exp) %% 10
+      buckets[[digit + 1]] <- c(buckets[[digit + 1]], x)
+    }
+    arr <- unlist(buckets)
+    exp <- exp * 10
+  }
+  return(arr)
+}
+
+nomor_tiket <- c(329, 45, 7, 88, 501, 23, 90, 4)
+radix_sort(nomor_tiket)
+
+b. COUNTING SORT
+
+Counting Sort (Sortir Hitung) adalah algoritma yang sangat efisien, tetapi hanya bisa
+digunakan jika kita tahu rentang nilai (range) dari data kita (misal, semua angka
+antara 0-9, atau 1-100).
+
+ <>--<> langkah Penyelesaian Algoritma (Indeks 1) <>--<>
+ 
+1.Cari Nilai Maksimal: Temukan nilai terbesar (max_val) dalam vektor input.
+2.Buat Array Hitung (Count): Buat sebuah vektor baru bernama count dengan ukuran max_val
+(atau max_val + 1 jika data mulai dari 0). Inisialisasi semua nilainya dengan 0.
+3.Hitung Frekuensi: Iterasi melalui vektor input (vektor[i]). Untuk setiap elemen, tambahkan 1 ke "ember"-nya: count[vektor[i]] = count[vektor[i]] + 1
+4.Susun Ulang Array (Combine):
+> Buat vektor hasil yang kosong.
+> Iterasi melalui array count, dari i = 1 hingga max_val:
+   while (count[i] > 0) (Selama hitungan untuk angka i masih ada):
+   Masukkan i ke dalam hasil.
+   count[i] = count[i] - 1 (kurangi hitungannya).
+> Kembalikan hasil.
+
+|~~~| CONTOH KASUS |~~~|
+
+Bagian administrasi sebuah toko elektronik mencatat jumlah barang rusak yang dikembalikan oleh pelanggan dalam satu minggu. Data tersebut tidak berurutan, sehingga petugas perlu mengurutkannya dari jumlah barang rusak terbanyak → tersedikit.
+Data jumlah barang rusak adalah: [4, 2, 5, 3, 5, 1, 3, 2]
+Gunakan Counting Sort (Descending) untuk mengurutkan data tersebut.
+
+1. Cari Nilai Maksimal
+Nilai terbesar dalam vektor adalah:
+max_val = 5
+
+2. Buat Array Hitung
+Buat array count dengan indeks 1 sampai 5:
+
+count = [0, 0, 0, 0, 0]
+            ↑  ↑  ↑  ↑  ↑
+        idx: 1  2  3  4  5
+
+3. Hitung Frekuensi
+Iterasikan vektor satu per satu:
+vektor[1] = 4 → count[4] = 1
+vektor[2] = 2 → count[2] = 1
+vektor[3] = 5 → count[5] = 1
+vektor[4] = 3 → count[3] = 1
+vektor[5] = 5 → count[5] = 2
+vektor[6] = 1 → count[1] = 1
+vektor[7] = 3 → count[3] = 2
+vektor[8] = 2 → count[2] = 2
+Hasil count:
+[1, 2, 2, 1, 2]
+Artinya:
+Ada 1 buah 1
+Ada 2 buah 2
+Ada 2 buah 3
+Ada 1 buah 4
+Ada 2 buah 5
+
+4. Susun Hasil (Descending)
+Kita membaca count mulai dari indeks terbesar → terkecil.
+Mulai dari 5:
+count[5] = 2 → hasil: 5, 5
+Berikutnya 4:
+count[4] = 1 → hasil: 5, 5, 4
+Berikutnya 3:
+count[3] = 2 → hasil: 5, 5, 4, 3, 3
+Berikutnya 2:
+count[2] = 2 → hasil: 5, 5, 4, 3, 3, 2, 2
+Terakhir 1:
+count[1] = 1 → hasil: 5, 5, 4, 3, 3, 2, 2, 1
+
+HASIL AKHIR (Descending):
+[5, 5, 4, 3, 3, 2, 2, 1]
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+counting_sort <- function(arr) {
+  max_val <- max(arr)
+  count <- numeric(max_val + 1)
+  output <- numeric(length(arr))
+  
+  for (x in arr) count[x + 1] <- count[x + 1] + 1
+  for (i in 2:length(count)) count[i] <- count[i] + count[i-1]
+  for (i in seq(length(arr), 1)) {
+    output[count[arr[i] + 1]] <- arr[i]
+    count[arr[i] + 1] <- count[arr[i] + 1] - 1
+  }
+  return(rev(output))
+}
+
+barang_rusak <- c(4, 2, 5, 3, 5, 1, 3, 2)
+counting_sort(barang_rusak)
+
+
+----------* #C. METODE SEARCHING *----------
+
+  Searching adalah kumpulan langkah sistematis yang dirancang untuk menemukan
+keberadaan suatu data spesifik (target atau key) di dalam sekumpulan data.
+Langkah ini terbagi menjadi dua yaitu Unsorted Search dan Sorted Search.
+
+#1. Unsorted Search
+
+Unsorted Search adalah algoritma yang mencari data tanpa memerlukan data dalam 
+kondisi terurut.Algoritma yang termasuk dalam Comparison Sort antara lain:
+
+a. SEQUENTIAL SEARCH
+Memeriksa elemen dari awal sampai akhir, sederhana tapi kurang
+efesien jika data nya besar. Ia akan berhenti ketika target di temukan.
+  
+  |~~~| CONTOH KASUS |~~~|
+  
+Seorang petugas gudang sedang mencari barang dengan kode 20 di antara daftar
+barang yang baru saja datang. Daftar kode barang tersebut dicatat dalam urutan
+kedatangan sebagai berikut:
+[12, 8, 4, 15, 30, 20]
+Karena daftar barang tidak diurutkan, petugas harus memeriksa satu per satu
+menggunakan metode Sequential Search. Ia mulai dari barang pertama hingga
+seterusnya.Pada indeks ke berapakah barang dengan kode 20 ditemukan?
+  
+Data
+Vektor Awal: [12,8,4,15,30,20]
+Target: 20
+
+Langkah interasi:
+  1.	Cek vektor [1] -> 12 == 20? Tidak.
+2.	Cek vektor [2] -> 8 == 20? Tidak.
+3.	Cek vektor [3] -> 4 == 20? Tidak.
+4.	Cek vektor [4] -> 15 == 20? Tidak.
+5.	Cek vektor [5] -> 30 == 20? Tidak.
+6.	Cek vektor [6] -> 20 == 20? Ya.
+
+DITEMUKAN di indeks 6. Proses pencarian berhenti.
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+sequential_search <- function(arr, target) {
+  for (i in 1:length(arr)) {
+    if (arr[i] == target) {
+      return(list(index = i, nilai = arr[i]))
+    }
+  }
+  return(list(index = NA, nilai = NA))
+}
+
+# Data sesuai soal
+barang <- c(12, 8, 4, 15, 30, 20)
+
+# Mencari kode 20
+sequential_search(barang, 20)
+
+
+B. HASH TABLE SEARCH
+Menggunakan fungsi hash untuk menghitung indeks (posisi) data secara 
+langsung, memungkinkan pencarian instan tanpa perbandingan. Sangat cepat 
+jika tidak ada tabrakan (collision), jika collision gunakan chaining dan 
+sequential search dalam bucket.
+
+|~~~| CONTOH KASUS |~~~|
+
+Sebuah perpustakaan digital sedang menyimpan tiga kode buku terbaru dalam 
+sistem database sederhana. Untuk mempercepat pencarian, pustakawan menggunakan
+hash table dengan fungsi:
+  indeks = (nilai % 3) + 1
+Tiga kode buku yang harus dimasukkan ke sistem adalah:[12, 7, 20], di bucket 
+nomor berapakah kode 20 ditemukan?
+  
+Data
+Vektor Awal: [12,7,20]
+Target: 20
+
+Fungsi hash: indeks = (nilai % 3) + 1
+
+Proses Membangun Tabel Hash (Setup):
+12:(12 % 3) + 1 = 0 + 1 = 1. Simpan 12 di bucket [1].
+7:(7 % 3) + 1 = 1 + 1 = 2. Simpan 7 di bucket [2].
+20: (20 % 3) + 1 = 2 + 1 = 3. Simpan 20 di bucket [3].
+
+Tabel Hash Final: [(1):[12], (2):[7], (3):[20]]
+
+Iterasi Pencarian:
+Hitung hash dari Target 209: indeks = (20 % 3) + 1 = 3.
+Lompat langsung ke bucket indeks 3.
+Periksa isi bucket [3]. Ditemukan 20.
+
+DITEMUKAN. (Pencarian selesai dalam 1 langkah).
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+# Fungsi hash
+hash_func <- function(x) {
+  return((x %% 3) + 1)
+}
+
+# Membuat hash table dengan 3 bucket
+hash_table <- vector("list", 3)
+
+# Data kode buku
+data <- c(12, 7, 20)
+
+# Memasukkan data ke hash table
+for (x in data) {
+  idx <- hash_func(x)
+  hash_table[[idx]] <- c(hash_table[[idx]], x)
+}
+
+# Menampilkan hash table
+hash_table
+
+# Mencari kode buku 20
+search_value <- 20
+bucket <- hash_func(search_value)
+
+list(
+  nilai = search_value,
+  ditemukan_di_bucket = bucket,
+  isi_bucket = hash_table[[bucket]]
+)
+
+
+
+C. BINARY SEARCH TREE (BST)
+Mencari data dengan menelusuri struktur pohon, bergerak ke cabang 
+kiri (nilai lebih kecil) atau kanan (nilai lebih besar) secara rekursif
+sampai menemukan target.
+
+|~~~| CONTOH KASUS |~~~|
+
+Seorang teknisi jaringan sedang mencari data perangkat dengan ID 35 pada sebuah
+sistem monitoring yang menyimpan datanya dalam bentuk Binary Search Tree (BST).
+Setiap perangkat disimpan berdasarkan urutan besar–kecil ID-nya.
+Struktur data perangkat tersebut saat ini berisi:[50, 30, 70, 25, 35, 60, 80]
+di node manakah nilai 35 ditemukan, dan berapa kali pergerakan yang dilakukan 
+dari root hingga ditemukan?
+  
+Vektor Input: [50,30,70,25,35,60,80]
+Target: 35
+
+Jalur Pencarian:
+•	Mulai di root: 50
+35 < 50 -> kiri -> 30
+•	Di node 30
+35 > 30 -> kanan -> 35
+•	DITEMUKAN
+
+Ditemukan setelah 2 kali pergerakan dari root 
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+# Struktur Node BST
+create_node <- function(value) {
+  list(
+    value = value,
+    left = NULL,
+    right = NULL
+  )
+}
+
+# Insert ke BST
+insert_bst <- function(root, value) {
+  if (is.null(root)) {
+    return(create_node(value))
+  }
+  
+  if (value < root$value) {
+    root$left <- insert_bst(root$left, value)
+  } else {
+    root$right <- insert_bst(root$right, value)
+  }
+  return(root)
+}
+
+# Search di BST + hitung pergerakan dari root
+search_bst <- function(root, target) {
+  steps <- 0
+  current <- root
+  
+  while (!is.null(current)) {
+    steps <- steps + 1
+    
+    if (current$value == target) {
+      return(list(node = current$value, langkah = steps))
+    }
+    
+    if (target < current$value) {
+      current <- current$left
+    } else {
+      current <- current$right
+    }
+  }
+  
+  return(list(node = NA, langkah = steps))
+}
+
+# -------------------
+# Membangun BST
+# -------------------
+
+data <- c(50, 30, 70, 25, 35, 60, 80)
+root <- NULL
+
+for (x in data) {
+  root <- insert_bst(root, x)
+}
+
+# Mencari ID 35
+hasil <- search_bst(root, 35)
+hasil
+
+
+#2 Sorted Search
+
+algoritma yang memanfaatkan struktur data terurut untuk menemukan data dengan
+lebih efisien. Algoritma yang termasuk dalam Comparison Sort antara lain:
+
+a. BINARY SEARCH
+Mencari elemen pada data terurut dengan membandingkan target ke nilai
+tengah, lalu membuang setengah bagian pencarian secara berulang. 
+
+|~~~| CONTOH KASUS |~~~|
+
+Seorang analis data sedang mencari laporan dengan kode 18 di dalam daftar
+laporan yang sudah diurutkan secara ascending. Daftar kode laporan tersebut 
+adalah:[5, 9, 14, 18, 21, 30, 33]
+Untuk mempercepat proses pencarian, analis tersebut menggunakan metode
+Binary Search. pada indeks berapakah nilai 18 ditemukan dan berapa jumlah
+iterasi yang diperlukan?
+  
+Data Terurut
+Vektor Awal: [5,9,14,18,21,30,33]
+Target: 18
+
+Iterasi 1:
+1.	kiri=1, kanan=7 -> tengah = (1+7)/2 = 4 -> nilai 18
+2.	Target == 18 -> DITEMUKAN.
+
+Ditemukan di indeks 4 hanya dalam 1 iterasi.
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+binary_search <- function(arr, target) {
+  low <- 1
+  high <- length(arr)
+  iter <- 0
+  
+  while (low <= high) {
+    iter <- iter + 1
+    mid <- floor((low + high) / 2)
+    
+    cat("Iterasi", iter, ": cek indeks", mid, "nilai =", arr[mid], "\n")
+    
+    if (arr[mid] == target) {
+      cat("\nTARGET ditemukan pada indeks", mid, 
+          "dengan total iterasi =", iter, "\n")
+      return(list(index = mid, iterasi = iter))
+    }
+    
+    if (arr[mid] < target) {
+      low <- mid + 1
+    } else {
+      high <- mid - 1
+    }
+  }
+  
+  cat("TARGET tidak ditemukan.\n")
+  return(list(index = NA, iterasi = iter))
+}
+
+# Data sesuai soal
+kode <- c(5, 9, 14, 18, 21, 30, 33)
+
+# Cari kode 18
+hasil <- binary_search(kode, 18)
+hasil
+
+
+b. INTERPOLATION SESARCH
+Menebak posisi elemen secara cerdas (interpolasi) pada data terurut, 
+dengan asumsi data terdistribusi seragam (bukan sekadar membelah di tengah).
+
+|~~~| CONTOH KASUS |~~~|
+  
+  Seorang manajer gudang sedang mencari barang dengan harga 600 ribu pada 
+daftar harga barang yang terdistribusi seragam. Daftar harga tersebut sudah
+tersusun rapi sebagai berikut: [100, 200, 300, 400, 500, 600, 700, 800]
+Karena datanya memiliki pola yang teratur, manajer tersebut menggunakan metode
+Interpolation Search untuk mempercepat pencarian. pada indeks berapakah nilai
+600 ditemukan dan berapa jumlah iterasi yang diperlukan?
+  
+Data Seragam
+Vektor Awal: [100,200,300,400,500,600,700,800]
+Target: 600
+
+Iterasi 1:
+pos = L +  floor(((Target – V[L]) * (R-L)) / (V[R] – V[L])
+pos = 1 +  floor(((600-100) * (8-1)) / (800-100)
+pos = 1 +  floor((500 * 7) / 700
+pos = 1 + 5 = 6
+Cek vektor 6 -> 600 -> DITEMUKAN
+                                                     
+Ditemukan dalam 1 iterasi pada indeks 6
+
+<>--<> IMPLEMENTASI DALAM R <>--<>
+
+interpolation_search <- function(arr, target) {
+  low <- 1
+  high <- length(arr)
+  iter <- 0
+  
+  while (low <= high && target >= arr[low] && target <= arr[high]) {
+    iter <- iter + 1
+    
+    # Rumus posisi interpolasi
+    pos <- low + ((target - arr[low]) * (high - low)) /
+      (arr[high] - arr[low])
+    
+    pos <- as.integer(pos)
+    
+    if (arr[pos] == target) {
+      return(list(index = pos, iterasi = iter))
+    }
+    if (arr[pos] < target) {
+      low <- pos + 1
+    } else {
+      high <- pos - 1
+    }
+  }
+  
+  return(list(index = NA, iterasi = iter))
+}
+
+# Data sesuai soal
+harga <- c(100, 200, 300, 400, 500, 600, 700, 800)
+
+# Cari harga 600
+hasil <- interpolation_search(harga, 600)
+hasil
+
+  
+C. JUMP SEARCH
+Mencari pada data terurut dengan "melompat" maju dalam interval tetap 
+(blok), lalu melakukan pencarian berurutan di dalam blok yang relevan. 
+ketika melewati target, lakukan Sequential Search di blok tersebut.
+
+|~~~| CONTOH KASUS |~~~|
+  
+Seorang analis penjualan sedang mencari data transaksi dengan nilai 29 pada
+daftar transaksi yang sudah diurutkan secara ascending. Daftar tersebut berisi
+16 data:[2, 5, 7, 10, 13, 15, 18, 20, 25, 28, 29, 30, 35, 40, 45, 50]
+pada indeks berapakah nilai 29 ditemukan?
+  
+Data terurut
+Vektor Awal: [2, 5, 7, 10, 13, 15, 18, 20, 25, 28, 29, 30, 35, 40, 45, 50]
+n = 16 -> ukuran lompatan = sqrt{16} = 4
+Target: 29
+
+Lompatan
+Lompat ke indeks 4 -> 10 < 29 lanjut
+Lompat ke indeks 8 -> 20 < 29 lanjut
+Lompat ke indeks 12 -> 30 > 29 -> stop block
+
+Pencarian dalam blok (9–12)
+25 == 29
+28 == 29
+29 == 29 -> DITEMUKAN
+
+Target ada di indeks 11
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+  
+# Jump Search Function
+jump_search <- function(arr, target) {
+  n <- length(arr)
+  step <- floor(sqrt(n))     # ukuran lompatan
+  prev <- 1
+  
+  cat("Ukuran lompatan =", step, "\n\n")
+  
+  # Melompat blok demi blok
+  while (prev <= n && arr[min(step, n)] < target) {
+    cat("Melompat ke indeks", min(step, n), "dengan nilai", arr[min(step, n)], "\n")
+    prev <- step + 1
+    step <- step + floor(sqrt(n))
+  }
+  
+  cat("\nMulai pencarian linear dari indeks", prev, "hingga", min(step, n), "\n")
+  
+  # Linear search pada blok ditemukan
+  for (i in prev:min(step, n)) {
+    cat("Cek indeks", i, "nilai =", arr[i], "\n")
+    if (arr[i] == target) {
+      cat("\nTARGET ditemukan pada indeks", i, "\n")
+      return(i)
+    }
+  }
+  
+  cat("\nTARGET tidak ditemukan.\n")
+  return(-1)
+}
+
+# Data dari soal
+data <- c(2, 5, 7, 10, 13, 15, 18, 20, 25, 28, 29, 30, 35, 40, 45, 50)
+
+# Mencari nilai 29
+jump_search(data, 29)
+  
+
+----------* #D. METODE GREEDY *----------
+
+  Algoritma Greedy adalah teknik pemecahan masalah yang membuat pilihan lokal
+terbaik pada setiap langkah, dengan harapan mendapatkan solusi global optimal.
+
+<>--<> Prinsip Kerja Greedy <>--<>
+  
+1.Selalu mengambil keputusan paling menguntungkan saat ini.
+2. Keputusan yang sudah dibuat tidak bisa diubah (tidak mundur/backtracking).
+3. Langkah ini diulang sampai masalah selesai.
+
+|~~~| Contoh |~~~|
+  
+  1. Greedy : Optimal Storage on Tapes
+· Menggunakan Media Akses Sekuensial -> urutan penyimpanan data mempengaruhi
+waktu akses.
+· Keputusan Greedy memilih file dengan durasi terpendek di taruh paling depan.
+· Tujuannya adalah meminimalkan Mean Retrieval Time (MRT).
+
+2. Greedy : Knapsack Problem
+· 0/1 Knapsack (Biner): barang tidak bisa dibagi karna Algoritma Greedy 
+sering gagal di sini.
+· Fractional Knapsack (Pecahan): Barang bisa dibagi/dipecah karna algoritma
+Greedy sangat efektif dan optimal untuk kasus ini.
+·Keputusan Greedy memilih barang dengan densitas tertinggi (Nilai/Berat)
+untuk diambil duluan.
+· Tujuannya adalah Maksimasi Profit (Keuntungan).
+
+|~~~| CONTOH KASUS |~~~|
+  
+  -> Greedy : Optimal Bus Dispatching
+Terdapat 3 rute bus dengan durasi perjalanan (menit):
+> R1 : 25 menit
+> R2 : 10 menit
+> R3 : 15 menit
+
+Skenario 1 : Urutan Sembarang 
+Urutan penyimpanan: [R1] -> [R2] -> [R3] 
+1.R1 : 25
+2.R2 : 25+10 = 35
+3.R3 : 25+10+15 = 50
+> Total waktu : 25+35+50 = 110 menit 
+> MCT : 115/3 = 36.66 menit
+
+Skenario 2 : Pendekatan Greedy
+Urutan penyimpanan (Terurut Kecil ke Besar): [R2] -> [R3] -> [R1]
+1.R2 : 10
+2.R3 : 10+15 = 25
+3.R1 : 10+15+25 = 50
+> Total wakti : 10+25+50 = 85 menit
+> MCT : 85/3 = 28.33 menit
+
+  <>--<> IMPLEMENTASI DALAM R <>--<>
+
+# Fungsi untuk menghitung Total Completion Time (TCT) dan Mean Completion Time (MCT)
+hitung_waktu <- function(durations) {
+  waktu_selesai <- cumsum(durations)       # akumulasi waktu
+  total_waktu <- sum(waktu_selesai)        # total completion time
+  mct <- total_waktu / length(durations)   # rata-rata
+
+  list(
+    urutan = durations,
+    waktu_selesai = waktu_selesai,
+    total_waktu = total_waktu,
+    MCT = mct
+  )
+}
+
+# Data durasi rute
+R1 <- 25
+R2 <- 10
+R3 <- 15
+
+# =========================
+# Skenario 1: Urutan Sembarang
+# =========================
+skenario1 <- c(R1, R2, R3)
+hasil1 <- hitung_waktu(skenario1)
+
+cat("=== Skenario 1: Urutan Sembarang ===\n")
+cat("Urutan :", hasil1$urutan, "\n")
+cat("Waktu selesai :", hasil1$waktu_selesai, "\n")
+cat("Total waktu :", hasil1$total_waktu, "\n")
+cat("MCT :", hasil1$MCT, "\n\n")
+
+
+# =========================
+# Skenario 2: Greedy (Shortest Job First)
+# =========================
+skenario2 <- sort(c(R1, R2, R3))  # greedy = urut kecil → besar
+hasil2 <- hitung_waktu(skenario2)
+
+cat("=== Skenario 2: Greedy ===\n")
+cat("Urutan :", hasil2$urutan, "\n")
+cat("Waktu selesai :", hasil2$waktu_selesai, "\n")
+cat("Total waktu :", hasil2$total_waktu, "\n")
+cat("MCT :", hasil2$MCT, "\n")
+
+
+
+
+
+
